@@ -1,14 +1,18 @@
 from cryptography.fernet import Fernet
 
 #loading the key file we created
+
 def load_key():
     file = open("key.key", "rb")
     key = file.read()
     file.close()
     return key
 
-key = load_key()
+
+
 master_pwd = input("what is the master password? ")
+key = load_key() + master_pwd.encode()
+fer = Fernet(key)
 
 #encryption key
 # write key
@@ -18,12 +22,6 @@ master_pwd = input("what is the master password? ")
         key_file.write(key)
 
 write_key()'''
-
-def load_key():
-    file = open("key.key", "rb")
-    key = file.read()
-    file.close()
-    return key
 
 # functions that we will pass into the while loop
 import os
@@ -35,7 +33,7 @@ def view():
                 try:
                     data = line.rstrip()
                     user, passw = data.split("|")
-                    print("User:", user, "Password:", passw)
+                    print("User:", user, " | Password:", str(fer.decrypt(passw.encode())))
                 except ValueError:
                     print("Error: Incorrect format in file.")
     else:
@@ -51,7 +49,7 @@ def add():
     # with the 'a' mode, we are appending something to the end of the file, and will create a new one if none exist
     with open('passwords.txt', 'a') as f:
         # \n is telling the program to end the current line
-        f.write(name + "|" + pwd +'\n')
+        f.write(name + "|" + str(fer.encrypt(pwd.encode()).decode()) +'\n')
 
 while True:
     mode = input("would you like to add new passwords or view previous passwords? (view/add)? Press Q to quit: ").lower()
