@@ -1,5 +1,29 @@
+from cryptography.fernet import Fernet
 
+#loading the key file we created
+def load_key():
+    file = open("key.key", "rb")
+    key = file.read()
+    file.close()
+    return key
+
+key = load_key()
 master_pwd = input("what is the master password? ")
+
+#encryption key
+# write key
+'''def write_key():
+    key = Fernet.generate_key()
+    with open("key.key", "wb") as key_file:
+        key_file.write(key)
+
+write_key()'''
+
+def load_key():
+    file = open("key.key", "rb")
+    key = file.read()
+    file.close()
+    return key
 
 # functions that we will pass into the while loop
 import os
